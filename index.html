@@ -6,30 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rachel Phin</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+
+        .text-soft {
+            color: #94a3b8;
+        }
+
+        .hover-soft:hover {
+            color: #cbd5e1;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+<body class="min-h-screen flex items-center justify-center">
     <div class="max-w-2xl mx-auto px-4 py-16 text-center">
-        <h1 class="text-4xl font-bold text-gray-900 mb-6">Rachel Phin</h1>
-        <p class="text-xl text-gray-600 mb-8">Software Developer</p>
+        <h1 class="text-4xl font-bold mb-6">rachel phin</h1>
+        <p class="text-xl text-soft mb-8">machine learning, math, and other stuff</p>
 
         <div class="space-y-4">
             <a href="#" onclick="window.location.href = 'mailto:' + ['me', 'rachelphin.com'].join('@'); return false;"
-                class="text-blue-600 hover:text-blue-800 block">
+                class="text-soft hover-soft block transition-colors duration-200">
                 <span id="email">[email protected]</span>
             </a>
             <a href="https://www.linkedin.com/in/rachelphin" target="_blank" rel="noopener noreferrer"
-                class="text-blue-600 hover:text-blue-800 block">
+                class="text-soft hover-soft block transition-colors duration-200">
                 LinkedIn
             </a>
         </div>
 
-        <p class="mt-12 text-gray-500 italic">Website under construction</p>
+        <p class="mt-12 text-soft italic">Website under construction</p>
     </div>
 
     <script>
         // Update the visible email text when the page loads
-        document.getElementById('email').textContent = ['rachelphin', 'gmail.com'].join('@');
+        document.getElementById('email').textContent = ['me', 'rachelphin.com'].join('@');
     </script>
 </body>
 
