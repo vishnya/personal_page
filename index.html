@@ -1,124 +1,455 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rachel Phin</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #ffffff;
-            --text-color: #1a1a1a;
-            --secondary-color: #4a5568;
-            --accent-color: #60a5fa;
-            --accent-hover: #93c5fd;
+            --bg: #0a0a0a;
+            --surface: #141414;
+            --text: #e2e8f0;
+            --text2: #94a3b8;
+            --accent: #60a5fa;
+            --accent2: #93c5fd;
+            --border: #1e1e1e;
         }
-
-        [data-theme="dark"] {
-            --bg-color: #0a0a0a;
-            --text-color: #e2e8f0;
-            --secondary-color: #94a3b8;
-            --accent-color: #60a5fa;
-            --accent-hover: #93c5fd;
+        [data-theme="light"] {
+            --bg: #ffffff;
+            --surface: #f5f5f5;
+            --text: #1a1a1a;
+            --text2: #4a5568;
+            --border: #e2e2e2;
         }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
         }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { color: var(--accent2); }
 
-        .gradient-text {
-            background: linear-gradient(45deg, var(--accent-color), var(--accent-hover));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .link-hover {
-            position: relative;
-            display: inline-block;
-            color: var(--accent-color);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            transition: all 0.3s ease;
-        }
-
-        .link-hover:hover {
-            background-color: rgba(96, 165, 250, 0.1);
-            color: var(--accent-hover);
-        }
-
+        /* Theme toggle */
         .theme-toggle {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            padding: 0.5rem;
-            border-radius: 50%;
-            background: transparent;
-            border: 2px solid var(--accent-color);
-            color: var(--accent-color);
-            cursor: pointer;
-            transition: all 0.3s ease;
+            position: fixed; top: 1.2rem; right: 1.2rem; z-index: 100;
+            padding: 0.5rem; border-radius: 50%; background: var(--surface);
+            border: 1px solid var(--border); color: var(--text2); cursor: pointer;
+            transition: all 0.3s;
+        }
+        .theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+            padding: 2rem;
+        }
+        .hero h1 {
+            font-size: 4rem; font-weight: 700; letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; margin-bottom: 0.5rem;
+        }
+        .hero .role { font-size: 1.3rem; color: var(--text2); font-weight: 500; margin-bottom: 1.5rem; }
+        .hero .bio { max-width: 540px; color: var(--text2); font-size: 1rem; margin-bottom: 2.5rem; }
+        .hero-links { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+        .hero-links a {
+            padding: 0.4rem 1rem; border-radius: 6px; font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        .hero-links a:hover { background: rgba(96,165,250,0.1); }
+        .scroll-hint {
+            position: absolute; bottom: 2rem; animation: bounce 2s infinite;
+            color: var(--text2); font-size: 1.5rem;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
         }
 
-        .theme-toggle:hover {
-            background-color: rgba(96, 165, 250, 0.1);
+        /* Projects */
+        .projects { max-width: 1100px; margin: 0 auto; padding: 0 2rem 6rem; }
+        .projects-title {
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;
+            color: var(--text2); text-align: center; margin-bottom: 4rem;
+        }
+        .project {
+            display: flex; align-items: center; gap: 4rem;
+            margin-bottom: 6rem; opacity: 0; transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .project.visible { opacity: 1; transform: translateY(0); }
+        .project:nth-child(even) { flex-direction: row-reverse; }
+        .project-mockup { flex: 1; min-width: 0; }
+        .project-info { flex: 1; min-width: 0; }
+        .project-info h2 { font-size: 1.8rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .project-info .desc { color: var(--text2); margin-bottom: 1rem; }
+        .project-info .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+        .project-info .tag {
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px;
+            padding: 0.2rem 0.6rem; border-radius: 4px;
+            background: var(--surface); border: 1px solid var(--border); color: var(--text2);
+        }
+        .project-info .link { font-size: 0.9rem; font-weight: 500; }
+
+        /* Browser frame */
+        .browser {
+            background: #1e1e1e; border-radius: 10px; overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .browser .chrome {
+            background: #2d2d2d; padding: 10px 14px; display: flex;
+            align-items: center; gap: 6px;
+        }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot.r { background: #ff5f57; } .dot.y { background: #febc2e; } .dot.g { background: #28c840; }
+        .url-bar {
+            flex: 1; background: #1a1a1a; border-radius: 4px; padding: 4px 10px;
+            font-size: 11px; color: #666; margin-left: 10px; font-family: 'Inter', monospace;
+        }
+        .browser .viewport { min-height: 220px; position: relative; overflow: hidden; }
+
+        /* Phone frame */
+        .phone {
+            width: 280px; margin: 0 auto; background: #1a1a1a; border-radius: 30px;
+            padding: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            border: 2px solid #333;
+        }
+        .phone .notch {
+            width: 80px; height: 6px; background: #333; border-radius: 3px;
+            margin: 0 auto 8px;
+        }
+        .phone .screen { border-radius: 18px; overflow: hidden; min-height: 360px; }
+
+        /* === Pancake mockup === */
+        .mock-pancake { background: #1a1a2e; padding: 16px; font-family: 'Inter', sans-serif; }
+        .mock-pancake .mp-title { font-size: 16px; font-weight: 600; color: #a0b4d0; margin-bottom: 12px; }
+        .mock-pancake .mp-section { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 4px; }
+        .mp-s-active { color: #5cb85c; }
+        .mp-s-projects { color: #d4a855; }
+        .mock-pancake .mp-list {
+            background: #16213e; border: 1px solid #2a3a5c; border-radius: 6px;
+            padding: 4px; margin-bottom: 10px;
+        }
+        .mock-pancake .mp-task {
+            display: flex; align-items: center; gap: 6px; padding: 5px 8px; font-size: 11px; color: #e0e0e0;
+        }
+        .mp-cb {
+            width: 12px; height: 12px; border-radius: 3px; border: 1.5px solid #5cb85c;
+            flex-shrink: 0; background: transparent;
+        }
+        .mp-pill {
+            font-size: 8px; padding: 1px 5px; border-radius: 6px;
+            margin-left: auto; white-space: nowrap;
+        }
+        .mp-pill-today { background: #3a2a2a; color: #d4a0a0; }
+        .mp-pill-rec { background: #2a3040; color: #8ab4d4; font-style: italic; }
+        .mp-fab {
+            width: 32px; height: 32px; border-radius: 50%; background: #d4a855;
+            position: absolute; bottom: 12px; right: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; color: #1a1a2e;
+        }
+        .mp-proj { font-size: 12px; font-weight: 600; color: #d4a855; margin-bottom: 2px; padding: 4px 8px; }
+
+        /* === Anki Fox mockup === */
+        .mock-anki { background: #1a1a1a; padding: 16px; font-family: 'Inter', sans-serif; text-align: center; }
+        .mock-anki .ma-fox { font-size: 40px; margin-bottom: 8px; }
+        .mock-anki .ma-title { font-size: 14px; font-weight: 600; color: #e87f3a; margin-bottom: 12px; }
+        .mock-anki .ma-card {
+            background: #222; border: 1px solid #333; border-radius: 8px;
+            padding: 16px; margin-bottom: 10px; text-align: left;
+        }
+        .mock-anki .ma-label { font-size: 8px; text-transform: uppercase; color: #666; margin-bottom: 4px; }
+        .mock-anki .ma-q { font-size: 12px; color: #e0e0e0; }
+        .mock-anki .ma-btn {
+            display: inline-block; padding: 6px 16px; border-radius: 6px;
+            background: #4a9eff; color: white; font-size: 11px; font-weight: 500;
+        }
+
+        /* === Polymarket mockup === */
+        .mock-poly { background: #0f1117; padding: 16px; font-family: 'Inter', sans-serif; }
+        .mock-poly .mpl-title { font-size: 13px; font-weight: 600; color: #e0e0e0; margin-bottom: 10px; }
+        .mock-poly .mpl-chart {
+            height: 80px; background: linear-gradient(180deg, rgba(108,92,231,0.2) 0%, transparent 100%);
+            border-bottom: 1px solid #2a2a3a; margin-bottom: 10px; position: relative;
+        }
+        .mpl-line {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+            background: linear-gradient(90deg,
+                transparent 0%, rgba(108,92,231,0.6) 15%, rgba(108,92,231,0.8) 30%,
+                rgba(108,92,231,0.4) 50%, rgba(108,92,231,0.9) 70%,
+                rgba(108,92,231,0.5) 85%, rgba(108,92,231,0.7) 100%
+            );
+            clip-path: polygon(0% 80%, 10% 60%, 20% 70%, 35% 30%, 50% 50%, 65% 20%, 80% 40%, 90% 15%, 100% 25%, 100% 100%, 0% 100%);
+        }
+        .mock-poly .mpl-cards { display: flex; gap: 6px; }
+        .mock-poly .mpl-card {
+            flex: 1; background: #1a1a2e; border: 1px solid #2a2a3a; border-radius: 6px; padding: 8px;
+        }
+        .mpl-card-label { font-size: 8px; color: #6c5ce7; text-transform: uppercase; }
+        .mpl-card-val { font-size: 14px; font-weight: 600; color: #e0e0e0; }
+
+        /* === Walkie mockup === */
+        .mock-walkie { background: #0d1117; font-family: 'Inter', sans-serif; }
+        .mock-walkie .mw-header {
+            padding: 10px 14px; border-bottom: 1px solid #1e1e2e;
+            font-size: 12px; font-weight: 600; color: #c084fc;
+            display: flex; justify-content: space-between;
+        }
+        .mock-walkie .mw-msgs { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+        .mw-msg {
+            padding: 8px 10px; border-radius: 10px; font-size: 10px;
+            max-width: 80%; line-height: 1.4;
+        }
+        .mw-msg.user { background: #2d1b69; color: #e0d4ff; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .mw-msg.asst { background: #1e1e2e; color: #c0c0d0; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .mock-walkie .mw-input {
+            padding: 8px 12px; border-top: 1px solid #1e1e2e;
+            display: flex; gap: 8px; align-items: center;
+        }
+        .mw-input-bar {
+            flex: 1; background: #161620; border: 1px solid #2a2a3a; border-radius: 16px;
+            padding: 6px 10px; font-size: 10px; color: #555;
+        }
+        .mw-send { width: 24px; height: 24px; border-radius: 50%; background: #c084fc; }
+
+        /* === LeanAgent mockup === */
+        .mock-lean { background: #0d1117; padding: 16px; font-family: 'Inter', monospace; }
+        .mock-lean .ml-badge {
+            display: inline-block; font-size: 8px; padding: 2px 6px; border-radius: 4px;
+            background: #1a3a1a; color: #4ade80; margin-bottom: 10px; font-family: 'Inter', sans-serif;
+        }
+        .mock-lean .ml-title { font-size: 13px; font-weight: 600; color: #e0e0e0; margin-bottom: 10px; font-family: 'Inter', sans-serif; }
+        .mock-lean .ml-code {
+            background: #161b22; border: 1px solid #21262d; border-radius: 6px;
+            padding: 10px; font-size: 10px; line-height: 1.5;
+        }
+        .ml-kw { color: #ff7b72; }
+        .ml-fn { color: #d2a8ff; }
+        .ml-cm { color: #8b949e; }
+        .ml-str { color: #a5d6ff; }
+
+        /* Footer */
+        footer {
+            text-align: center; padding: 3rem 2rem; color: var(--text2);
+            font-size: 0.85rem; border-top: 1px solid var(--border);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero .role { font-size: 1.1rem; }
+            .project { flex-direction: column !important; gap: 2rem; margin-bottom: 4rem; }
+            .phone { width: 240px; }
+            .phone .screen { min-height: 300px; }
         }
     </style>
 </head>
-
-<body class="min-h-screen flex items-center justify-center p-4">
-    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
         </svg>
     </button>
 
-    <div class="max-w-2xl w-full">
-        <div class="text-center mb-16">
-            <h1 class="text-5xl font-bold mb-4 gradient-text">rachel phin</h1>
-            <p class="text-xl" style="color: var(--secondary-color)">machine learning, math, and other stuff</p>
+    <!-- Hero -->
+    <section class="hero">
+        <h1>rachel phin</h1>
+        <p class="role">AI engineer</p>
+        <p class="bio">I build tools that put AI to work &mdash; second brains, study aids, trading analytics, and mobile interfaces for code agents.</p>
+        <div class="hero-links">
+            <a href="#" onclick="window.location.href='mailto:'+['me','rachelphin.com'].join('@');return false;">email</a>
+            <a href="https://www.linkedin.com/in/rachel-phin" target="_blank">linkedin</a>
+            <a href="https://github.com/vishnya" target="_blank">github</a>
+        </div>
+        <div class="scroll-hint">&darr;</div>
+    </section>
+
+    <!-- Projects -->
+    <section class="projects">
+        <p class="projects-title">Projects</p>
+
+        <!-- Pancake -->
+        <div class="project">
+            <div class="project-mockup">
+                <div class="browser">
+                    <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="url-bar">pancake.local</span></div>
+                    <div class="viewport mock-pancake">
+                        <div class="mp-title">Pancake</div>
+                        <div class="mp-section mp-s-active">Active (2)</div>
+                        <div class="mp-list">
+                            <div class="mp-task"><span class="mp-cb"></span> Ship recurring tasks <span class="mp-pill mp-pill-today">today</span></div>
+                            <div class="mp-task"><span class="mp-cb"></span> Fix mobile layout <span class="mp-pill mp-pill-rec">&#x21BB; daily</span></div>
+                        </div>
+                        <div class="mp-section mp-s-projects">Projects</div>
+                        <div class="mp-list">
+                            <div class="mp-proj">Semper Paratus</div>
+                            <div class="mp-task"><span class="mp-cb"></span> Anki review <span class="mp-pill mp-pill-rec">&#x21BB; daily</span></div>
+                            <div class="mp-task"><span class="mp-cb"></span> Plan next sprint</div>
+                        </div>
+                        <div class="mp-fab">&#x1F3A4;</div>
+                    </div>
+                </div>
+            </div>
+            <div class="project-info">
+                <h2>Pancake</h2>
+                <p class="desc">Local-first second brain and priority tracker. Voice input, recurring tasks, natural language deadlines, and an AI thinking partner &mdash; all in a single Markdown file.</p>
+                <div class="tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">Whisper</span>
+                    <span class="tag">Claude API</span>
+                    <span class="tag">Mobile-first</span>
+                </div>
+                <a class="link" href="https://github.com/vishnya/pancake" target="_blank">View on GitHub &rarr;</a>
+            </div>
         </div>
 
-        <div class="space-y-6 text-center">
-            <a href="#" onclick="window.location.href = 'mailto:' + ['me', 'rachelphin.com'].join('@'); return false;"
-                class="link-hover">
-                <span id="email">[email protected]</span>
-            </a>
-            <a href="https://www.linkedin.com/in/rachel-phin" target="_blank" rel="noopener noreferrer"
-                class="link-hover">
-                LinkedIn
-            </a>
+        <!-- Anki Fox -->
+        <div class="project">
+            <div class="project-mockup">
+                <div class="browser">
+                    <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="url-bar">anki-fox</span></div>
+                    <div class="viewport mock-anki">
+                        <div class="ma-fox">&#x1F98A;</div>
+                        <div class="ma-title">Anki Fox</div>
+                        <div class="ma-card">
+                            <div class="ma-label">Generated Card</div>
+                            <div class="ma-q"><strong>Q:</strong> What is the attention mechanism?</div>
+                            <div style="border-top:1px solid #333; margin:8px 0;"></div>
+                            <div class="ma-q"><strong>A:</strong> A function mapping queries and key-value pairs to weighted outputs.</div>
+                        </div>
+                        <div class="ma-btn">Generate Cards</div>
+                    </div>
+                </div>
+            </div>
+            <div class="project-info">
+                <h2>Anki Fox</h2>
+                <p class="desc">Screenshot anything, get Anki flashcards automatically. Hotkey captures your screen, Claude extracts the knowledge, and cards appear in your deck.</p>
+                <div class="tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">Claude Vision</span>
+                    <span class="tag">Anki Connect</span>
+                    <span class="tag">macOS</span>
+                </div>
+                <a class="link" href="https://github.com/vishnya/anki-fox" target="_blank">View on GitHub &rarr;</a>
+            </div>
         </div>
 
-        <div class="mt-16 text-center">
-            <p class="text-sm" style="color: var(--secondary-color)">Website under construction</p>
+        <!-- Polymarket Trends -->
+        <div class="project">
+            <div class="project-mockup">
+                <div class="browser">
+                    <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="url-bar">polymarket-trends</span></div>
+                    <div class="viewport mock-poly">
+                        <div class="mpl-title">Strategy Performance</div>
+                        <div class="mpl-chart"><div class="mpl-line"></div></div>
+                        <div class="mpl-cards">
+                            <div class="mpl-card"><div class="mpl-card-label">Win Rate</div><div class="mpl-card-val">68%</div></div>
+                            <div class="mpl-card"><div class="mpl-card-label">Avg Return</div><div class="mpl-card-val">+12.4%</div></div>
+                            <div class="mpl-card"><div class="mpl-card-label">Trades</div><div class="mpl-card-val">847</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="project-info">
+                <h2>Polymarket Trends</h2>
+                <p class="desc">Analytics engine for assessing prediction market trades and backtesting strategies. Tracks historical odds, identifies patterns, and simulates expected returns.</p>
+                <div class="tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">Data Analysis</span>
+                    <span class="tag">Polymarket API</span>
+                </div>
+                <a class="link" href="https://github.com/vishnya/polymarket-trends" target="_blank">View on GitHub &rarr;</a>
+            </div>
         </div>
-    </div>
+
+        <!-- Walkie -->
+        <div class="project">
+            <div class="project-mockup">
+                <div class="phone">
+                    <div class="notch"></div>
+                    <div class="screen mock-walkie">
+                        <div class="mw-header"><span>Claude</span><span style="opacity:0.5">&#x25CF; connected</span></div>
+                        <div class="mw-msgs">
+                            <div class="mw-msg user">Fix the auth bug in pancake</div>
+                            <div class="mw-msg asst">I found the issue &mdash; the session token isn't being refreshed after cookie expiry. I'll fix the middleware and add a test.</div>
+                            <div class="mw-msg user">Ship it</div>
+                            <div class="mw-msg asst">Done. Committed, tests pass, deployed to production.</div>
+                        </div>
+                        <div class="mw-input">
+                            <div class="mw-input-bar">Message Claude...</div>
+                            <div class="mw-send"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="project-info">
+                <h2>Walkie</h2>
+                <p class="desc">Mobile-first web interface for Claude Code. Talk to your AI coding agent from your phone &mdash; voice input, real-time streaming, session management, and tool use visualization.</p>
+                <div class="tags">
+                    <span class="tag">Node.js</span>
+                    <span class="tag">WebSocket</span>
+                    <span class="tag">Claude Code SDK</span>
+                    <span class="tag">PWA</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- LeanAgent -->
+        <div class="project">
+            <div class="project-mockup">
+                <div class="browser">
+                    <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="url-bar">github.com/vishnya/LeanAgent</span></div>
+                    <div class="viewport mock-lean">
+                        <div class="ml-badge">&#x2442; Fork</div>
+                        <div class="ml-title">LeanAgent</div>
+                        <div class="ml-code">
+                            <span class="ml-cm">-- Lifelong learning for theorem proving</span><br>
+                            <span class="ml-kw">theorem</span> <span class="ml-fn">fermats_little</span> (p : <span class="ml-str">Nat</span>) :<br>
+                            &nbsp;&nbsp;<span class="ml-str">Prime</span> p &rarr; &forall; a,<br>
+                            &nbsp;&nbsp;a ^ p &equiv; a [<span class="ml-str">MOD</span> p] := <span class="ml-kw">by</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="ml-fn">lean_agent</span>.prove<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="ml-cm">-- QED (discovered automatically)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="project-info">
+                <h2>LeanAgent</h2>
+                <p class="desc">Lifelong learning framework for formal theorem proving. Continuously generalizes to expanding mathematical knowledge without forgetting previously learned proofs.</p>
+                <div class="tags">
+                    <span class="tag">Lean 4</span>
+                    <span class="tag">ML Research</span>
+                    <span class="tag">Theorem Proving</span>
+                </div>
+                <a class="link" href="https://github.com/vishnya/LeanAgent" target="_blank">View on GitHub &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>rachel phin &middot; <a href="#" onclick="window.location.href='mailto:'+['me','rachelphin.com'].join('@');return false;">me@rachelphin.com</a></footer>
 
     <script>
-        document.getElementById('email').textContent = ['me', 'rachelphin.com'].join('@');
-
         function toggleTheme() {
-            const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+            const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', t);
+            localStorage.setItem('theme', t);
         }
+        const saved = localStorage.getItem('theme');
+        if (saved) document.documentElement.setAttribute('data-theme', saved);
+        else if (!window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.setAttribute('data-theme', 'light');
 
-        // Check for saved theme preference or use system preference
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            document.documentElement.setAttribute('data-theme', savedTheme);
-        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        }
+        // Scroll animations
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.project').forEach(p => obs.observe(p));
     </script>
 </body>
-
 </html>
