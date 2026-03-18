@@ -157,19 +157,49 @@
         .mp-proj { font-size: 12px; font-weight: 600; color: #d4a855; margin-bottom: 2px; padding: 4px 8px; }
 
         /* === Anki Fox mockup === */
-        .mock-anki { background: #1a1a1a; padding: 16px; font-family: 'Inter', sans-serif; text-align: center; }
-        .mock-anki .ma-fox { font-size: 40px; margin-bottom: 8px; }
-        .mock-anki .ma-title { font-size: 14px; font-weight: 600; color: #e87f3a; margin-bottom: 12px; }
-        .mock-anki .ma-card {
-            background: #222; border: 1px solid #333; border-radius: 8px;
-            padding: 16px; margin-bottom: 10px; text-align: left;
+        .mock-anki { background: #f5f5f0; padding: 0; font-family: 'Inter', sans-serif; display: flex; gap: 0; }
+        .ma-pdf {
+            flex: 1; background: #fff; padding: 14px 12px; border-right: 1px solid #ddd;
+            font-family: 'Georgia', serif; font-size: 9px; line-height: 1.6; color: #2a2a2a;
         }
-        .mock-anki .ma-label { font-size: 8px; text-transform: uppercase; color: #666; margin-bottom: 4px; }
-        .mock-anki .ma-q { font-size: 12px; color: #e0e0e0; }
-        .mock-anki .ma-btn {
-            display: inline-block; padding: 6px 16px; border-radius: 6px;
-            background: #4a9eff; color: white; font-size: 11px; font-weight: 500;
+        .ma-pdf .ma-pdf-title { font-size: 11px; font-weight: 700; margin-bottom: 6px; color: #1a1a1a; }
+        .ma-pdf .ma-highlight {
+            background: rgba(74,158,255,0.25); border-bottom: 2px solid #4a9eff;
+            padding: 0 1px; cursor: pointer; position: relative;
         }
+        .ma-pdf .ma-cursor {
+            display: inline-block; width: 1px; height: 11px; background: #4a9eff;
+            animation: blink 1s step-end infinite; vertical-align: text-bottom; margin-left: -1px;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        .ma-popup {
+            position: absolute; top: -32px; left: 50%; transform: translateX(-50%);
+            background: #1a1a1a; color: #fff; font-family: 'Inter', sans-serif;
+            font-size: 9px; padding: 4px 10px; border-radius: 6px;
+            white-space: nowrap; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            display: flex; align-items: center; gap: 5px;
+        }
+        .ma-popup::after {
+            content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%);
+            border-left: 4px solid transparent; border-right: 4px solid transparent;
+            border-top: 4px solid #1a1a1a;
+        }
+        .ma-popup-fox { font-size: 11px; }
+        .ma-card-panel {
+            width: 42%; background: #1a1a1a; padding: 10px; display: flex; flex-direction: column; gap: 6px;
+        }
+        .ma-card-panel .ma-panel-header {
+            display: flex; align-items: center; gap: 5px;
+            font-size: 9px; font-weight: 600; color: #e87f3a;
+        }
+        .ma-card-panel .ma-panel-fox { font-size: 14px; }
+        .ma-card {
+            background: #222; border: 1px solid #333; border-radius: 6px;
+            padding: 8px; text-align: left;
+        }
+        .mock-anki .ma-label { font-size: 7px; text-transform: uppercase; color: #666; margin-bottom: 3px; }
+        .mock-anki .ma-q { font-size: 9px; color: #e0e0e0; line-height: 1.4; }
+        .ma-card-new { border-color: #4a9eff; box-shadow: 0 0 6px rgba(74,158,255,0.3); }
 
         /* === Polymarket mockup === */
         .mock-poly { background: #0f1117; padding: 16px; font-family: 'Inter', sans-serif; }
@@ -316,15 +346,26 @@
                 <div class="browser">
                     <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="url-bar">anki-fox</span></div>
                     <div class="viewport mock-anki">
-                        <div class="ma-fox">&#x1F98A;</div>
-                        <div class="ma-title">Anki Fox</div>
-                        <div class="ma-card">
-                            <div class="ma-label">Generated Card</div>
-                            <div class="ma-q"><strong>Q:</strong> What is the attention mechanism?</div>
-                            <div style="border-top:1px solid #333; margin:8px 0;"></div>
-                            <div class="ma-q"><strong>A:</strong> A function mapping queries and key-value pairs to weighted outputs.</div>
+                        <div class="ma-pdf">
+                            <div class="ma-pdf-title">3.2 Scaled Dot-Product Attention</div>
+                            <p>The input consists of queries and keys of dimension d<sub>k</sub>, and values of dimension d<sub>v</sub>. We compute the dot products of the query with all keys, divide each by &radic;d<sub>k</sub>, and apply a softmax function to obtain the weights on the values.</p>
+                            <p style="margin-top:6px;"><span class="ma-highlight">In practice, we compute the attention function on a set of queries simultaneously, packed together into a matrix Q. The keys and values are also packed into matrices K and V.<span class="ma-cursor"></span><span class="ma-popup"><span class="ma-popup-fox">&#x1F98A;</span> Make card</span></span></p>
                         </div>
-                        <div class="ma-btn">Generate Cards</div>
+                        <div class="ma-card-panel">
+                            <div class="ma-panel-header"><span class="ma-panel-fox">&#x1F98A;</span> Anki Fox</div>
+                            <div class="ma-card ma-card-new">
+                                <div class="ma-label">New Card</div>
+                                <div class="ma-q"><strong>Q:</strong> How is attention computed in matrix form?</div>
+                                <div style="border-top:1px solid #333; margin:6px 0;"></div>
+                                <div class="ma-q"><strong>A:</strong> Queries, keys, and values are packed into matrices Q, K, V and attention is computed simultaneously on the full set.</div>
+                            </div>
+                            <div class="ma-card">
+                                <div class="ma-label">Card</div>
+                                <div class="ma-q"><strong>Q:</strong> Why divide by &radic;d<sub>k</sub>?</div>
+                                <div style="border-top:1px solid #333; margin:6px 0;"></div>
+                                <div class="ma-q"><strong>A:</strong> To prevent large dot products from pushing softmax into regions with vanishing gradients.</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
