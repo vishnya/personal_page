@@ -157,30 +157,48 @@
         .mp-proj { font-size: 12px; font-weight: 600; color: #d4a855; margin-bottom: 2px; padding: 4px 8px; }
 
         /* === Anki Fox mockup === */
-        .mock-anki { background: #f5f5f0; padding: 0; font-family: 'Inter', sans-serif; display: flex; gap: 0; }
-        .ma-pdf {
-            flex: 1; background: #fff; padding: 14px 12px; border-right: 1px solid #ddd;
+        .mock-anki { background: #2a2a2a; padding: 0; font-family: 'Inter', sans-serif; display: flex; gap: 0; position: relative; }
+        .ma-screen {
+            flex: 1; position: relative; overflow: hidden;
+        }
+        .ma-screen-bg {
+            background: #fff; padding: 14px 12px;
             font-family: 'Georgia', serif; font-size: 9px; line-height: 1.6; color: #2a2a2a;
+            /* Dim everything outside the selection */
         }
-        .ma-pdf .ma-pdf-title { font-size: 11px; font-weight: 700; margin-bottom: 6px; color: #1a1a1a; }
-        .ma-pdf .ma-highlight {
-            background: #b4d5fe; color: #000;
-            padding: 1px 0; cursor: text; position: relative;
-            box-decoration-break: clone; -webkit-box-decoration-break: clone;
+        .ma-screen-bg .ma-pdf-title { font-size: 11px; font-weight: 700; margin-bottom: 6px; color: #1a1a1a; }
+        /* Semi-transparent overlay to show screenshot selection */
+        .ma-select-overlay {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            pointer-events: none;
         }
-        .ma-popup {
-            position: absolute; top: -28px; left: 0;
-            background: #1a1a1a; color: #fff; font-family: 'Inter', sans-serif;
-            font-size: 9px; padding: 4px 10px; border-radius: 6px;
-            white-space: nowrap; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            display: flex; align-items: center; gap: 5px;
+        /* The selected region (clear window through the overlay) */
+        .ma-select-box {
+            position: absolute; top: 38px; left: 8px; right: 8px; bottom: 32px;
+            border: 2px dashed #fff;
+            background: transparent;
+            box-shadow: 0 0 0 9999px rgba(0,0,0,0.4);
+            z-index: 1;
         }
-        .ma-popup::after {
-            content: ''; position: absolute; bottom: -4px; left: 14px;
-            border-left: 4px solid transparent; border-right: 4px solid transparent;
-            border-top: 4px solid #1a1a1a;
+        /* Crosshair cursor indicator */
+        .ma-crosshair {
+            position: absolute; bottom: 26px; right: 4px; z-index: 2;
+            font-size: 16px; color: #fff; opacity: 0.9;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
-        .ma-popup-fox { font-size: 11px; }
+        /* Hotkey badge */
+        .ma-hotkey {
+            position: absolute; top: 6px; right: 6px; z-index: 2;
+            background: rgba(0,0,0,0.7); color: #e87f3a; font-size: 8px;
+            padding: 2px 6px; border-radius: 4px; font-family: 'Inter', sans-serif;
+            font-weight: 600; letter-spacing: 0.5px;
+        }
+        /* Arrow between screen and cards */
+        .ma-arrow {
+            display: flex; align-items: center; justify-content: center;
+            width: 24px; color: #e87f3a; font-size: 14px; flex-shrink: 0;
+        }
         .ma-card-panel {
             width: 42%; background: #1a1a1a; padding: 10px; display: flex; flex-direction: column; gap: 6px;
         }
@@ -342,11 +360,17 @@
                 <div class="browser">
                     <div class="chrome"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="url-bar">anki-fox</span></div>
                     <div class="viewport mock-anki">
-                        <div class="ma-pdf">
-                            <div class="ma-pdf-title">3.2 Scaled Dot-Product Attention</div>
-                            <p>The input consists of queries and keys of dimension d<sub>k</sub>, and values of dimension d<sub>v</sub>. We compute the dot products of the query with all keys, divide each by &radic;d<sub>k</sub>, and apply a softmax function to obtain the weights on the values.</p>
-                            <p style="margin-top:6px;"><span class="ma-highlight">In practice, we compute the attention function on a set of queries simultaneously, packed together into a matrix Q. The keys and values are also packed into matrices K and V.<span class="ma-popup"><span class="ma-popup-fox">&#x1F98A;</span> Make card</span></span></p>
+                        <div class="ma-screen">
+                            <div class="ma-screen-bg">
+                                <div class="ma-pdf-title">3.2 Scaled Dot-Product Attention</div>
+                                <p>The input consists of queries and keys of dimension d<sub>k</sub>, and values of dimension d<sub>v</sub>. We compute the dot products of the query with all keys, divide each by &radic;d<sub>k</sub>, and apply a softmax function to obtain the weights on the values.</p>
+                                <p style="margin-top:6px;">In practice, we compute the attention function on a set of queries simultaneously, packed together into a matrix Q. The keys and values are also packed into matrices K and V.</p>
+                            </div>
+                            <div class="ma-select-box"></div>
+                            <div class="ma-crosshair">&#x271B;</div>
+                            <div class="ma-hotkey">&#x2325;&#x21E7;A</div>
                         </div>
+                        <div class="ma-arrow">&rarr;</div>
                         <div class="ma-card-panel">
                             <div class="ma-panel-header"><span class="ma-panel-fox">&#x1F98A;</span> Anki Fox</div>
                             <div class="ma-card ma-card-new">
@@ -428,7 +452,7 @@
             </div>
             <div class="project-info">
                 <h2>Walkie</h2>
-                <p class="desc">Claude Code from your phone. Runs on your server, accessed through a mobile web UI. No sandbox, no permission prompts &mdash; your repos, your tools, full autonomy.</p>
+                <p class="desc">Claude Code from your phone. Runs on your server inside an OS-level sandbox, accessed through a mobile web UI. Reconnects seamlessly after disconnects with event replay. Your repos, your tools, full autonomy.</p>
                 <div class="tags">
                     <span class="tag">Node.js</span>
                     <span class="tag">WebSocket</span>
