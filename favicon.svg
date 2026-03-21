@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Planet body -->
+  <circle cx="32" cy="32" r="18" fill="#60a5fa"/>
+  <circle cx="32" cy="32" r="18" fill="url(#grad)" opacity="0.6"/>
+
+  <!-- Planet gradient for depth -->
+  <defs>
+    <radialGradient id="grad" cx="40%" cy="35%">
+      <stop offset="0%" stop-color="#93c5fd"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Ring (ellipse behind and in front of planet) -->
+  <!-- Back ring (behind planet) -->
+  <ellipse cx="32" cy="32" rx="28" ry="8" fill="none" stroke="#c084fc" stroke-width="2.5" stroke-dasharray="88 88" stroke-dashoffset="0" opacity="0.4" transform="rotate(-20 32 32)"/>
+  <!-- Front ring (in front of planet) -->
+  <ellipse cx="32" cy="32" rx="28" ry="8" fill="none" stroke="#c084fc" stroke-width="2.5" stroke-dasharray="88 88" stroke-dashoffset="88" opacity="0.9" transform="rotate(-20 32 32)"/>
+
+  <!-- Sparkles -->
+  <circle cx="8" cy="12" r="1.5" fill="#fbbf24" opacity="0.9"/>
+  <circle cx="56" cy="10" r="1" fill="#fbbf24" opacity="0.7"/>
+  <circle cx="52" cy="52" r="1.2" fill="#fbbf24" opacity="0.8"/>
+  <circle cx="12" cy="50" r="0.8" fill="#fbbf24" opacity="0.6"/>
+  <circle cx="4" cy="32" r="1" fill="#c084fc" opacity="0.5"/>
+  <circle cx="60" cy="30" r="0.8" fill="#93c5fd" opacity="0.6"/>
+
+  <!-- Star sparkles (4-pointed) -->
+  <path d="M10 8 L10.5 6 L11 8 L13 8.5 L11 9 L10.5 11 L10 9 L8 8.5 Z" fill="#fbbf24" opacity="0.8"/>
+  <path d="M54 48 L54.4 46.5 L54.8 48 L56.3 48.4 L54.8 48.8 L54.4 50.3 L54 48.8 L52.5 48.4 Z" fill="#fbbf24" opacity="0.7"/>
+  <path d="M48 6 L48.3 4.8 L48.6 6 L49.8 6.3 L48.6 6.6 L48.3 7.8 L48 6.6 L46.8 6.3 Z" fill="#c084fc" opacity="0.6"/>
+</svg>
